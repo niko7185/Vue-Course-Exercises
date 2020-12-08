@@ -3,7 +3,7 @@
     <the-header></the-header>
     <the-tabs :tabIndex="currentTabIndex"></the-tabs>
     <keep-alive>
-        <component :is="activeComponent" :resource-list="resources" @data-modified="modifyResource"></component>
+        <component :is="activeComponent" ></component>
     </keep-alive>
     
 </template>
@@ -59,28 +59,25 @@ export default {
     },
     provide() {
         return {
-            changeTab: this.changeTab
+            changeTab: this.changeTab,
+            addResource: this.addResource,
+            deleteResource: this.deleteResource,
+            resourceList: this.resources,
         }
     },
     methods: {
         changeTab(tabIndex){
-                this.currentTabIndex = tabIndex;
-                
-            },
-        modifyResource(resource) {
+            this.currentTabIndex = tabIndex;
             
-            switch (resource.action) {
-                case "add":
-                    this.resources.push(resource);
-
-                    this.currentTabIndex = 1;
-                    break;
+        },
+        addResource(resource) {
             
-                case "remove":
-                    this.resources = this.resources.filter(r => r.id != resource.id);
-                    break;
-            }
-
+            this.resources.push(resource)
+            this.currentTabIndex = 1;
+        },
+        deleteResource(index) {
+            
+            this.resources.splice(index, 1);
         },
     }
 }
